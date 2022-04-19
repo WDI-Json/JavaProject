@@ -1,8 +1,8 @@
 function initMap() {
-    const chicago = new google.maps.LatLng(41.85, -87.65);
+    const chicago = new google.maps.LatLng(52.49953, 6.07845);
     const map = new google.maps.Map(document.getElementById("map"), {
         center: chicago,
-        zoom: 3,
+        zoom: 14,
     });
     const coordInfoWindow = new google.maps.InfoWindow();
 
@@ -29,12 +29,12 @@ function createInfoWindowContent(latLng, zoom) {
         Math.floor((worldCoordinate.y * scale) / TILE_SIZE)
     );
     return [
-        "Chicago, IL",
-        "LatLng: " + latLng,
-        "Zoom level: " + zoom,
-        "World Coordinate: " + worldCoordinate,
-        "Pixel Coordinate: " + pixelCoordinate,
-        "Tile Coordinate: " + tileCoordinate,
+        "Hogeschool Windesheim",
+        "Coordinaten: " + latLng,
+        "Zoomniveau: " + zoom,
+        "World Coordinaten: " + worldCoordinate,
+        "Pixel Coordinaten: " + pixelCoordinate,
+        "Tile Coordinaten: " + tileCoordinate,
     ].join("<br>");
 }
 
