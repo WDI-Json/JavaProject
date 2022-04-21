@@ -1,18 +1,90 @@
+const places = [{
+        title: "Hogeschool Windesheim",
+        location: { lat: 52.49953, lng: 6.07845 }
+    },
+    {
+        title: "Engelse werk",
+        location: { lat: 52.4970232, lng: 6.06394 }
+    },
+    {
+        title: "Scania",
+        location: { lat: 52.5255141, lng: 6.0800041 }
+    },
+    {
+        title: "McDonalds Noord",
+        location: { lat: 52.5224281, lng: 6.1145818 }
+    },
+    {
+        title: "Hogeschool Windesheim",
+        location: { lat: 52.49953, lng: 6.07845 }
+    }
+]
+
+window.places = places;
+const form = document.getElementById('form');
+const error = document.getElementById('error');
+const destination = document.getElementById('destination');
+const thanks = document.getElementById('thanks');
+
+destination.oninvalid = invalid;
+form.onsubmit = submit;
+
+function invalid(event) {
+    error.removeAttribute('hidden');
+}
+
+function submit(event) {
+    form.setAttribute('hidden', '');
+    thanks.removeAttribute('hidden');
+
+    // For this example, don't actually submit the form
+    event.preventDefault();
+}
+
+
+function createMarkersPerPlace(map) {
+    for (let { title, location }
+        of window.places) {
+        let position = new google.maps.LatLng(location);
+        new google.maps.Marker({ position, map, title });
+    }
+}
+
+// draws polylines between window.places
+// see: https://developers.google.com/maps/documentation/javascript/examples/polyline-simple
+function createLinesBetweenPlaces(map) {
+
+    let path = window.places.map(place => place.location)
+    const transportPath = new google.maps.Polyline({
+        path,
+        geodesic: true,
+        strokeColor: "#FF0000",
+        strokeOpacity: 1.0,
+        strokeWeight: 2,
+    });
+
+    transportPath.setMap(map);
+}
+
 function initMap() {
-    const chicago = new google.maps.LatLng(52.49953, 6.07845);
+    const zwolle = new google.maps.LatLng(52.49953, 6.07845);
+
     const map = new google.maps.Map(document.getElementById("map"), {
-        center: chicago,
-        zoom: 14,
+        center: zwolle,
+        zoom: 12,
     });
     const coordInfoWindow = new google.maps.InfoWindow();
 
-    coordInfoWindow.setContent(createInfoWindowContent(chicago, map.getZoom()));
-    coordInfoWindow.setPosition(chicago);
+    coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
+    coordInfoWindow.setPosition(zwolle);
     coordInfoWindow.open(map);
     map.addListener("zoom_changed", () => {
-        coordInfoWindow.setContent(createInfoWindowContent(chicago, map.getZoom()));
+        coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
         coordInfoWindow.open(map);
     });
+
+    createMarkersPerPlace(map);
+    createLinesBetweenPlaces(map);
 }
 
 const TILE_SIZE = 256;
