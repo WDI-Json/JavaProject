@@ -10,15 +10,17 @@
 
 <body>
     <h1>Get your greeting <a href="/greeting">here</a></h1>
+    <h1>Startpunt routeplanning</h1>
     <div id="map"></div>
+    <form id="form">
+        <p id="error" hidden>Please fill out all fields.</p>
 
-    <!-- 
-     The `defer` attribute causes the callback to execute after the full HTML
-     document has been parsed. For non-blocking uses, avoiding race conditions,
-     and consistent behavior across browsers, consider loading using Promises
-     with https://www.npmjs.com/package/@googlemaps/js-api-loader.
-    -->
-    <h1>Showing Pixel and Tile Coordinates</h1>
+        <label for="destination">Bestemming</label>
+        <input type="text" id="destination" required>
+
+        <button type="submit">Submit</button>
+    </form>
+    <p id="thanks" hidden>Your data has been received. Thanks!</p>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly" defer></script>
 </body>
 
