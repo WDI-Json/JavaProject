@@ -12,7 +12,9 @@
     <h1>Get your greeting <a href="/greeting">here</a></h1>
     <h1>Startpunt routeplanning</h1>
     <div id="map"></div>
-    <form id="form">
+
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form -->
+    <form id="form" action="" method="get">
         <p id="error" hidden>Please fill out all fields.</p>
 
         <label for="destination">Bestemming</label>
@@ -21,6 +23,8 @@
         <button type="submit">Submit</button>
     </form>
     <p id="thanks" hidden>Your data has been received. Thanks!</p>
+
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly" defer></script>
 </body>
 

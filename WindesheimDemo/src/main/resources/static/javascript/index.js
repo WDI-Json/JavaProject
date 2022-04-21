@@ -21,26 +21,6 @@ const places = [{
 ]
 
 window.places = places;
-const form = document.getElementById('form');
-const error = document.getElementById('error');
-const destination = document.getElementById('destination');
-const thanks = document.getElementById('thanks');
-
-destination.oninvalid = invalid;
-form.onsubmit = submit;
-
-function invalid(event) {
-    error.removeAttribute('hidden');
-}
-
-function submit(event) {
-    form.setAttribute('hidden', '');
-    thanks.removeAttribute('hidden');
-
-    // For this example, don't actually submit the form
-    event.preventDefault();
-}
-
 
 function createMarkersPerPlace(map) {
     for (let { title, location }
@@ -69,6 +49,7 @@ function createLinesBetweenPlaces(map) {
 function initMap() {
     const zwolle = new google.maps.LatLng(52.49953, 6.07845);
 
+    // hier define je map.
     const map = new google.maps.Map(document.getElementById("map"), {
         center: zwolle,
         zoom: 12,
@@ -82,9 +63,15 @@ function initMap() {
         coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
         coordInfoWindow.open(map);
     });
+    // hier exit de functie en map als variable is weg, het heeft geen return
+    // window.initMap is voor de googlemaps library de "start" functie, je void main(String[] args) :) 
 
-    createMarkersPerPlace(map);
-    createLinesBetweenPlaces(map);
+    // nee geen return map, de initMap is een "afspraak" met de google maps library je weet niet of dat wel mag of dat google maps daarop borked dus meest simpele is dit:
+
+    window.map = map;
+
+    // hacky maar goed voor dit/voor nu
+    // reload en check in devconsole wat nu window.map is :) 
 }
 
 const TILE_SIZE = 256;
@@ -125,3 +112,35 @@ function project(latLng) {
 }
 
 window.initMap = initMap;
+
+function invalid(event) {
+    error.removeAttribute('hidden');
+}
+
+function submit(event) {
+    form.setAttribute('hidden', '');
+    thanks.removeAttribute('hidden');
+    console.log("De data komt doorrrrrr");
+
+    event.preventDefault();
+
+    // waar is map , check init map, ergens return je map, daaronder kan je het 'assignen' aan window.map
+
+    createMarkersPerPlace(window.map);
+    createLinesBetweenPlaces(window.map);
+
+}
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    // put yo stuff in here sir
+
+    const form = document.getElementById('form');
+    const error = document.getElementById('error');
+    const destination = document.getElementById('destination');
+    const thanks = document.getElementById('thanks');
+
+    destination.oninvalid = invalid;
+    form.onsubmit = submit;
+
+
+});
