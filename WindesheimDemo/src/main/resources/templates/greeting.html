@@ -1,13 +1,46 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org">
 
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Getting Started: Handling Form Submission</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
 <body>
-    <p th:text="'Hello, ' + ${name} + '!'" />
+    <h1>Form</h1>
+    <form class="relative" action="#" th:action="@{/greeting}" th:object="${greeting}" method="post">
+        <p>Id: <input type="text" th:field="*{id}" /></p>
+        <p>Message: <input type="text" th:field="*{content}" /></p>
+
+        <p> <input type="text" placeholder="text"> </p>
+        <p>
+            <input type="number" placeholder="number">
+            <input type="text" th:field="*{cityname}" placeholder="cityname">
+        </p>
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+        <p>
+            <input type="tel" placeholder="tel">
+        </p>
+        <input type="password" placeholder="password">
+        <input type="search" placeholder="search">
+        <input type="url" placeholder="url">
+        <input type="date" placeholder="data">
+        <input type="datetime-local" placeholder="datetime-local">
+        <input type="time" placeholder="time">
+        <input type="month" placeholder="month">
+        <input type="week" placeholder="week">
+        <span>
+                    <input type="color" placeholder="color" value="#e91e63">
+                    <input type="color" placeholder="color" value="#2537bb">
+                </span>
+        <input type="file" placeholder="file">
+        <select>
+                    <option value="option 1">option 1</option>
+                    <option value="option 2">option 2</option>
+                    <option value="option 3">option 3</option>
+                </select>
+        <textarea placeholder="textarea" rows="3"></textarea>
+    </form>
 </body>
 
 </html>
