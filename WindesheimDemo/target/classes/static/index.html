@@ -15,15 +15,14 @@
     <div id="map"></div>
 
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form -->
-    <form id="form" action="" method="get">
-        <p id="error" hidden>Please fill out all fields.</p>
-
-        <label for="destination">Bestemming</label>
-        <input type="text" id="destination" required>
-
-        <button type="submit" method="POST"> Submit</button>
+    <form class="relative" action="/greeting" th:action="@{/greeting}" th:object="${greeting}" method="post">
+        <p>Id: <input type="text" th:field="*{id}" /></p>
+        <p>Message: <input type="text" th:field="*{content}" /></p>
+        <p>
+            <input type="text" th:field="*{cityname}" placeholder="cityname">
+        </p>
+        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
-    <p id="thanks" hidden>Your data has been received. Thanks!</p>
 
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly" defer></script>

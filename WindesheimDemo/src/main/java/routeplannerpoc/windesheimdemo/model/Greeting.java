@@ -7,6 +7,15 @@ public class Greeting {
   private String content;
   private String cityname;
 
+  public Greeting(){
+    super();
+  }
+  
+  public Greeting(long id, String content, String cityname){
+    this.id = id;
+    this.content = content;
+    this.cityname = cityname;
+  }
   public long getId() {
     return id;
   }
@@ -29,6 +38,11 @@ public String getCityname() {
 
 public void setCityname(String name) {
   this.cityname = name;
+}
+
+@Override
+public String toString() {
+    return  "{id=" + String.valueOf(this.id) + ", content=" + this.content + ", cityname=" + this.cityname + "}";
 }
 
 }

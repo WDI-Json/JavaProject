@@ -18,9 +18,13 @@ public class Address {
     }
     
     public static String getNextUniqueID() {
-        int id = Integer.parseInt(addressID);     // get the static variable
-        ++id;                                    // increment it
-        addressID = Integer.toString(id);         // update the static variable
-        return addressID;                         // return the value to use for the employee 
+        int id = Integer.parseInt(addressID);     
+        ++id;                                    
+        addressID = Integer.toString(id);         
+        return addressID;                        
+    }
+    @Override
+    public String toString() {
+        return this.streetName + " " + this.houseNumber + " " + this.cityName + " " + this.country;
     }
 }
