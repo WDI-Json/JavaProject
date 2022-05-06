@@ -15,13 +15,20 @@
     <div id="map"></div>
 
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form -->
-    <form class="relative" action="/greeting" th:action="@{/greeting}" th:object="${greeting}" method="post">
+    <!-- <form class="relative" id="myform" action="/greeting" th:action="@{/greeting}" th:object="${greeting}" method="post"> -->
+    <form class="relative" id="myform">
         <p>Id: <input type="text" th:field="*{id}" /></p>
+
         <p>Message: <input type="text" th:field="*{content}" /></p>
+
         <p>
             <input type="text" th:field="*{cityname}" placeholder="cityname">
         </p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+
+        <p>
+            <input type="submit" value="Submit" />
+            <input type="reset" value="Reset" />
+        </p>
     </form>
 
 

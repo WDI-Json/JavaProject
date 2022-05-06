@@ -20,7 +20,12 @@ const places = [{
     }
 ]
 
-window.places = places;
+function initializePlaces(locations) {
+    windows.places = [];
+    window.places = locations;
+}
+
+
 
 function createMarkersPerPlace(map) {
     for (let { title, location }
@@ -66,12 +71,8 @@ function initMap() {
     // hier exit de functie en map als variable is weg, het heeft geen return
     // window.initMap is voor de googlemaps library de "start" functie, je void main(String[] args) :) 
 
-    // nee geen return map, de initMap is een "afspraak" met de google maps library je weet niet of dat wel mag of dat google maps daarop borked dus meest simpele is dit:
-
     window.map = map;
 
-    // hacky maar goed voor dit/voor nu
-    // reload en check in devconsole wat nu window.map is :) 
 }
 
 const TILE_SIZE = 256;
@@ -118,29 +119,35 @@ function invalid(event) {
 }
 
 function submit(event) {
-    form.setAttribute('hidden', '');
-    thanks.removeAttribute('hidden');
-    console.log("De data komt doorrrrrr");
-
     event.preventDefault();
-
-    // waar is map , check init map, ergens return je map, daaronder kan je het 'assignen' aan window.map
-
-    createMarkersPerPlace(window.map);
-    createLinesBetweenPlaces(window.map);
-
+    fetch('http://localhost:8080/greeting', {
+            method: 'POST',
+            body: JSON.stringify( // dit ga je straks vullen met je form input fields (geolocs in geolocs uit)
+                {
+                    title: 'foo',
+                    body: 'bar',
+                    userId: 1
+                }
+            ),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            }
+        })
+        .then(res => res.json())
+        .then(json => {
+            // console.log(json);
+            window.places = json; //toekomst: window.places setten to NULL en daarna pas waarden geven.
+            createMarkersPerPlace(window.map);
+            createLinesBetweenPlaces(window.map);
+        })
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    // put yo stuff in here sir
+    const form = document.getElementById('myform'); // deze id zoekt het form op dus die moet wel bestaan
+    // const error = document.getElementById('error');
+    // const destination = document.getElementById('destination');
+    // const thanks = document.getElementById('thanks');
 
-    const form = document.getElementById('form');
-    const error = document.getElementById('error');
-    const destination = document.getElementById('destination');
-    const thanks = document.getElementById('thanks');
-
-    destination.oninvalid = invalid;
+    // destination.oninvalid = invalid; 
     form.onsubmit = submit;
-
-
 });
