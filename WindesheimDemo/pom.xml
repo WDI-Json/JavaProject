@@ -14,7 +14,7 @@
 	<name>WindesheimDemo</name>
 	<description>Demo with google maps integrated with Java backend</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
