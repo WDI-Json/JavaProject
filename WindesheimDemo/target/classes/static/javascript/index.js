@@ -20,26 +20,11 @@ const places = [{
     }
 ]
 
-window.places = places;
-const form = document.getElementById('form');
-const error = document.getElementById('error');
-const destination = document.getElementById('destination');
-const thanks = document.getElementById('thanks');
-
-destination.oninvalid = invalid;
-form.onsubmit = submit;
-
-function invalid(event) {
-    error.removeAttribute('hidden');
+function initializePlaces(locations) {
+    windows.places = [];
+    window.places = locations;
 }
 
-function submit(event) {
-    form.setAttribute('hidden', '');
-    thanks.removeAttribute('hidden');
-
-    // For this example, don't actually submit the form
-    event.preventDefault();
-}
 
 
 function createMarkersPerPlace(map) {
@@ -69,6 +54,7 @@ function createLinesBetweenPlaces(map) {
 function initMap() {
     const zwolle = new google.maps.LatLng(52.49953, 6.07845);
 
+    // hier define je map.
     const map = new google.maps.Map(document.getElementById("map"), {
         center: zwolle,
         zoom: 12,
@@ -82,9 +68,11 @@ function initMap() {
         coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
         coordInfoWindow.open(map);
     });
+    // hier exit de functie en map als variable is weg, het heeft geen return
+    // window.initMap is voor de googlemaps library de "start" functie, je void main(String[] args) :) 
 
-    createMarkersPerPlace(map);
-    createLinesBetweenPlaces(map);
+    window.map = map;
+
 }
 
 const TILE_SIZE = 256;
@@ -125,3 +113,41 @@ function project(latLng) {
 }
 
 window.initMap = initMap;
+
+function invalid(event) {
+    error.removeAttribute('hidden');
+}
+
+function submit(event) {
+    event.preventDefault();
+    fetch('http://localhost:8080/greeting', {
+            method: 'POST',
+            body: JSON.stringify( // dit ga je straks vullen met je form input fields (geolocs in geolocs uit)
+                {
+                    title: 'foo',
+                    body: 'bar',
+                    userId: 1
+                }
+            ),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            }
+        })
+        .then(res => res.json())
+        .then(json => {
+            // console.log(json);
+            window.places = json; //toekomst: window.places setten to NULL en daarna pas waarden geven.
+            createMarkersPerPlace(window.map);
+            createLinesBetweenPlaces(window.map);
+        })
+}
+
+window.addEventListener('DOMContentLoaded', (event) => {
+    const form = document.getElementById('myform'); // deze id zoekt het form op dus die moet wel bestaan
+    // const error = document.getElementById('error');
+    // const destination = document.getElementById('destination');
+    // const thanks = document.getElementById('thanks');
+
+    // destination.oninvalid = invalid; 
+    form.onsubmit = submit;
+});

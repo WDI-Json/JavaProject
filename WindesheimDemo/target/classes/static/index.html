@@ -1,27 +1,54 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="nl">
 
-<head>
-    <title>Showing Pixel and Tile Coordinates</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link rel="stylesheet" href="./css/style.css" />
-    <script type="module" src="./javascript/index.js"></script>
-</head>
+    <head>
+        <title>Showing Pixel and Tile Coordinates</title>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+        <link href="https://cdn.jsdelivr.net/npm/fylgja@1/fylgja.css" rel="stylesheet">
+        <link rel="stylesheet" href="./css/style.css" />
+        <script type="module" src="./javascript/index.js"></script>
+    </head>
+    <body>
+        <div class="topnav">
+            <a id="logo">
+                <img id="logoimage" src="./css/assets/logo.jpeg" alt="logo"></a>
+            <a id="space"></a>
+            <a class="active">Login</a>
+        </div>
+        <div class="content">
+            <h1>Startpunt routeplanning</h1>
+            <div id="map"></div>
+            <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form -->
+            <!-- <form class="relative" id="myform" action="/greeting" th:action="@{/greeting}" th:object="${greeting}" method="post"> -->
+            <div class= "index-panel card-content flex-row items-center">
+                <form class="relative" id="myform">
+                    <p>Iddemo: <input type="text" th:field="*{id}" /></p>
+                    <p>Message:demo <input type="text" th:field="*{content}" /></p>
+                    <p>Citynamedemo<input type="text" th:field="*{cityname}" placeholder="citynamedemo"></p>
 
-<body>
-    <h1>Get your greeting <a href="/greeting">here</a></h1>
-    <h1>Startpunt routeplanning</h1>
-    <div id="map"></div>
-    <form id="form">
-        <p id="error" hidden>Please fill out all fields.</p>
-
-        <label for="destination">Bestemming</label>
-        <input type="text" id="destination" required>
-
-        <button type="submit">Submit</button>
-    </form>
-    <p id="thanks" hidden>Your data has been received. Thanks!</p>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly" defer></script>
-</body>
-
+                    <!-- Nog niet gekoppeld aan model -->
+                    <p>Personal Info
+                        <input type="text" placeholder="First name"><input type="text" placeholder="Last name"></p>
+                    <p>Adress information 
+                        <input type="text" placeholder="Streetname">
+                        <input type="number" placeholder="Housenumber" min="0">
+                        <input type="text" placeholder="Postal code">
+                        <select id="country" name="country">
+                            <option value="" selected disabled hidden>Country</option>
+                            <option value="Netherlands">Netherlands</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Belgium">Belgium</option>
+                            <option value="France">France</option>
+                            <option value="Luxembourg">Luxembourg</option>
+                    </p>
+                        <p>
+                            <input type="submit" value="Submit" />
+                            <input type="reset" value="Reset" />
+                        </p>
+                </form>
+            </div>
+        </div>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly" defer></script>
+        </div>
+    </body>
 </html>
