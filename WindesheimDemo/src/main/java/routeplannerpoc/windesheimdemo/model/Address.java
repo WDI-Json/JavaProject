@@ -18,6 +18,10 @@ public class Address {
     
     @Override
     public String toString() {
-        return this.streetName + " " + this.houseNumber + ", " + this.postalCode + " " + this.cityName + ", " + this.country;
+        return "{" + "\"streetname\":" + "\""+this.streetName + "\""+
+        "," + "\"housenumber\":" +this.houseNumber +
+        "," + "\"postalcode\":" + "\""+this.postalCode + "\""+
+        "," + "\"cityname\":" + "\""+this.cityName + "\""+
+        "," + "\"country\":" + "\""+this.country +"\""+ "}";
     }
 }

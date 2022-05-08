@@ -42,7 +42,9 @@ public void setCityname(String name) {
 
 @Override
 public String toString() {
-    return  "{id=" + String.valueOf(this.id) + ", content=" + this.content + ", cityname=" + this.cityname + "}";
+    return  "{id=" + String.valueOf(this.id) + 
+    ", content=" + this.content + 
+    ", cityname=" + this.cityname + "}";
 }
 
 }

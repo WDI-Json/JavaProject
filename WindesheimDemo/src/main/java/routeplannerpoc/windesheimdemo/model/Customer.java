@@ -1,6 +1,6 @@
 package routeplannerpoc.windesheimdemo.model;
 
-import java.util.ArrayList;
+// import java.util.ArrayList;
 
 public class Customer extends Person{
     private static String customerID = "0";
@@ -25,9 +25,10 @@ public class Customer extends Person{
 
     @Override
     public String toString() {
-        return "CustomerID: " + customerID + ", \nName: " 
-        + this.getFirstName() + " " + this.getLastName() + "\n"
-        + "Address: " + getAddress() + ".";
+        return "{\"CustomerID\":" + "\""+customerID + "\","+
+        "\"FirstName\":" + "\""+ this.getFirstName() + "\","+
+        "\"LastName\":" + "\""+ this.getLastName() + "\","+
+        "\"Address\":" + getAddress() + "}";
     }
     
 }
