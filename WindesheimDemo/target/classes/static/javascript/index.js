@@ -1,24 +1,24 @@
-const places = [{
-        title: "Hogeschool Windesheim",
-        location: { lat: 52.49953, lng: 6.07845 }
-    },
-    {
-        title: "Engelse werk",
-        location: { lat: 52.4970232, lng: 6.06394 }
-    },
-    {
-        title: "Scania",
-        location: { lat: 52.5255141, lng: 6.0800041 }
-    },
-    {
-        title: "McDonalds Noord",
-        location: { lat: 52.5224281, lng: 6.1145818 }
-    },
-    {
-        title: "Hogeschool Windesheim",
-        location: { lat: 52.49953, lng: 6.07845 }
-    }
-]
+// const places = [{
+//         title: "Hogeschool Windesheim",
+//         location: { lat: 52.49953, lng: 6.07845 }
+//     },
+//     {
+//         title: "Engelse werk",
+//         location: { lat: 52.4970232, lng: 6.06394 }
+//     },
+//     {
+//         title: "Scania",
+//         location: { lat: 52.5255141, lng: 6.0800041 }
+//     },
+//     {
+//         title: "McDonalds Noord",
+//         location: { lat: 52.5224281, lng: 6.1145818 }
+//     },
+//     {
+//         title: "Hogeschool Windesheim",
+//         location: { lat: 52.49953, lng: 6.07845 }
+//     }
+// ]
 
 function initializePlaces(locations) {
     windows.places = [];
