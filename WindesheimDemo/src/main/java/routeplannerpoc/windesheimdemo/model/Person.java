@@ -1,38 +1,39 @@
 package routeplannerpoc.windesheimdemo.model;
 
 public abstract class Person {
-    String firstName;
-    String lastName;
-    Boolean isEmployee;
+    String firstname;
+    String lastname;
+    Boolean isemployee;
     Address address;
 
-    public Person(String firstName, String lastName, String country, String streetName, Integer houseNumber, String cityName, String postalCode){
-        this.address = new Address(country, streetName, houseNumber, cityName, postalCode);
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Person(String firstname, String lastname, String country, String streetname, Integer housenumber, String cityname, String postalcode){
+        this.address = new Address(country, streetname, housenumber, cityname, postalcode);
+        this.firstname = firstname;
+        this.lastname = lastname;
     }
 
-    public String getAddress() {
-        return address.toString();
-    }
-
-    public Address getAddressObject() {
+    public Address getAddress() {
         return address;
     }
-
-    public String getFirstName() {
-        return firstName;
+    public String getFirstname() {
+        return firstname;
     }
-
-    public Boolean getIsEmployee() {
-        return isEmployee;
+    public Boolean getIsemployee() {
+        return isemployee;
     }
-
-    public void setIsEmployee(Boolean isEmployee) {
-        this.isEmployee = isEmployee;
+    public String getLastname() {
+        return lastname;
     }
-
-    public String getLastName() {
-        return lastName;
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+    public void setIsemployee(Boolean isemployee) {
+        this.isemployee = isemployee;
+    }
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 }

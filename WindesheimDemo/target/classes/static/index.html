@@ -1,51 +1,64 @@
 <!DOCTYPE HTML>
 <html lang="nl">
 
-    <head>
-        <title>Showing Pixel and Tile Coordinates</title>
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-        <link href="https://cdn.jsdelivr.net/npm/fylgja@1/fylgja.css" rel="stylesheet">
-        <link rel="stylesheet" href="./css/style.css" />
-        <script type="module" src="./javascript/index.js"></script>
-    </head>
-    <body>
-        <div class="topnav">
-            <a id="logo">
-                <img id="logoimage" src="./css/assets/logo.jpeg" alt="logo"></a>
-            <a id="space"></a>
-            <a class="active">Login</a>
-        </div>
-        <div class="content">
-            <h1>Startpunt routeplanning</h1>
-            <div id="map"></div>
-            <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form -->
-            <!-- <form class="relative" id="myform" action="/greeting" th:action="@{/greeting}" th:object="${greeting}" method="post"> -->
-            <div class= "index-panel card-content flex-row items-center">
-                <form class="relative" id="myform">
-                    <p>Iddemo: <input type="text" th:field="*{id}" /></p>
-                    <p>Message:demo <input type="text" th:field="*{content}" /></p>
-                    <p>Citynamedemo<input type="text" th:field="*{cityname}" placeholder="citynamedemo"></p>
+<head>
+    <title>NerdyGadgetsRouteplanner</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fylgja@1/fylgja.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css" />
+    <script type="module" src="./javascript/index.js"></script>
+</head>
 
+<body>
+    <div class="topnav">
+        <a id="logo">
+            <img id="logoimage" src="./css/assets/logo.jpeg" alt="logo"></a>
+        <a id="space"></a>
+        <a class="active">Login</a>
+    </div>
+    <div class="content">
+        <h1>Startpunt routeplanning</h1>
+        <div id="map"></div>
+        <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form -->
+        <!-- <form class="relative" id="myform" action="/greeting" th:action="@{/greeting}" th:object="${greeting}" method="post"> -->
+        <div class="index-panel card-content flex-row items-center">
+            <form class="relative" id="myform">
+                <p>Iddemo: <input type="text" th:field="*{id}" /></p>
+                <p>Message:demo <input type="text" th:field="*{content}" /></p>
+                <p>Citynamedemo<input type="text" th:field="*{cityname}" placeholder="citynamedemo"></p>
+                <p>
+                    <input type="submit" value="Submit" />
+                    <input type="reset" value="Reset" />
+                </p>
+            </form>
+            <!-- TESTING -->
+            <div class="index-panel card-content flex-row items-center">
+                <form class="relative" id="customerform" action="/customer" th:action="@{/customer}" th:object="${customer}" method="post">
                     <!-- Nog niet gekoppeld aan model -->
                     <p>Personal Info
-                        <input type="text" placeholder="First name"><input type="text" placeholder="Last name"></p>
-                    <p>Adress information 
-                        <input type="text" placeholder="Streetname">
-                        <input type="number" placeholder="Housenumber" min="0">
-                        <input type="text" placeholder="Postal code">
-                        <select id="country" name="country">
-                            <option value="" selected disabled hidden>Country</option>
-                            <option value="Netherlands">Netherlands</option>
-                            <option value="Germany">Germany</option>
-                            <option value="Belgium">Belgium</option>
-                            <option value="France">France</option>
-                            <option value="Luxembourg">Luxembourg</option>
+                        <input type="text" name="firstname" placeholder="First name" th:field="*{firstname}" required="required">
+                        <input type="text" name="lastname" placeholder="Last name" th:field="*{lastname}" required="required">
                     </p>
-                        <p>
-                            <input type="submit" value="Submit" />
-                            <input type="reset" value="Reset" />
-                        </p>
-                </form>
+                    <p>Adress information
+                        <input type="text" name="streetname" placeholder="Streetname" th:field="*{streetname}" required="required">
+                        <input type="number" name="housenumber" placeholder="Housenumber" min="0" th:field="*{housenumber}" required="required">
+                        <input type="text" name="postalcode" placeholder="Postalcode" th:field="*{postalcode}" required="required">
+                        <input type="text" name="cityname" placeholder="cityname" th:field="*{cityname}" required="required">
+                        <select id="country" name="country" th:field="*{country}" required="required">
+                                    <option value="" selected disabled hidden>Country</option>
+                                    <option value="Netherlands">Netherlands</option>
+                                    <option value="Germany">Germany</option>
+                                    <option value="Belgium">Belgium</option>
+                                    <option value="France">France</option>
+                                    <option value="Luxembourg">Luxembourg</option>
+                            </p>
+                                <p>
+                                    <input type="submit" value="Submit" />
+                                    <input type="reset" value="Reset" />
+                                </p>
+                        </form>
+                    </div>
+                    <!-- TESTING -->
             </div>
         </div>
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly" defer></script>

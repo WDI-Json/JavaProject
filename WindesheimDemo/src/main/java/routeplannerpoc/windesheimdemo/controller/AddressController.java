@@ -1,41 +1,33 @@
-// package routeplannerpoc.windesheimdemo.controller;
+package routeplannerpoc.windesheimdemo.controller;
 
-// import com.fasterxml.jackson.databind.JsonNode;
-// import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-// import org.springframework.stereotype.Controller;
-// import org.springframework.ui.Model;
-// import org.springframework.web.bind.annotation.GetMapping;
-// import org.springframework.web.bind.annotation.ModelAttribute;
-// import org.springframework.web.bind.annotation.PostMapping;
+import routeplannerpoc.windesheimdemo.model.Address;
+import routeplannerpoc.windesheimdemo.service.IAddressService;
 
-// import routeplannerpoc.windesheimdemo.geocoder.Geocoder;
-// import routeplannerpoc.windesheimdemo.model.Address;
+import java.util.List;
 
-// @Controller
-// public class AddressController {
-    
-//     public String convertToGeo(Address address) {
-//         String geocode;
-//         ObjectMapper mapper = new ObjectMapper();
-//         Geocoder geocoder = new Geocoder();
-        
-//         String response = geocoder.GeocodeSync(address.toString()); //"11 Wall St, New York, NY 10005");
-//         JsonNode responseJsonNode = mapper.readTree(response);
+@Controller
+public class AddressController {
 
-//         JsonNode items = responseJsonNode.get("items");
+    @Autowired
+    private IAddressService AddressService;
 
-//         for (JsonNode item : items) {
-//             JsonNode addressInput = item.get("address");
-//             String label = addressInput.get("label").asText();
-//             JsonNode position = item.get("position");
+    @RequestMapping(value = "/showaddresses", method = RequestMethod.GET, produces = "application/json")
+    public ResponseEntity<String> findCities(Model model) {
 
-//             String lat = position.get("lat").asText();
-//             String lng = position.get("lng").asText();
-//             String returnvalue = "{title: "+ label + ",\n" + "location: { lat:" + lat + ", lng:" + lng + "}";
-//             System.out.println(returnvalue);
-//             geocode = returnvalue;
-//         }
-//         return geocode;
-//     }
-// }
+        var cities = (List<Address>) AddressService.findAll();
+
+        model.addAttribute("cities", cities);
+
+        // return "showCities";
+        return new ResponseEntity<String>(String.valueOf(cities.size()), HttpStatus.OK);
+    }
+}
