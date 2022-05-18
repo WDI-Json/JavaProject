@@ -1,4 +1,4 @@
-// const places = [{
+
 //         title: "Hogeschool Windesheim",
 //         location: { lat: 52.49953, lng: 6.07845 }
 //     },
@@ -19,12 +19,6 @@
 //         location: { lat: 52.49953, lng: 6.07845 }
 //     }
 // ]
-
-function initializePlaces(locations) {
-    windows.places = [];
-    window.places = locations;
-}
-
 
 
 function createMarkersPerPlace(map) {
@@ -52,22 +46,26 @@ function createLinesBetweenPlaces(map) {
 }
 
 function initMap() {
-    const zwolle = new google.maps.LatLng(52.49953, 6.07845);
+    const zwolle = new google.maps.LatLng(52.514622453500046, 6.094557495652405);
 
     // hier define je map.
     const map = new google.maps.Map(document.getElementById("map"), {
         center: zwolle,
-        zoom: 12,
+        zoom: 11.75,
     });
     const coordInfoWindow = new google.maps.InfoWindow();
-
-    coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
     coordInfoWindow.setPosition(zwolle);
-    coordInfoWindow.open(map);
-    map.addListener("zoom_changed", () => {
-        coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
-        coordInfoWindow.open(map);
-    });
+
+    //bij gebruik van coordinatiewindow
+    // coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
+    // coordInfoWindow.setPosition(zwolle);
+    // coordInfoWindow.open(map);
+    // map.addListener("zoom_changed", () => {
+    //     // coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
+    //     coordInfoWindow.open(map);
+    // });
+
+
     // hier exit de functie en map als variable is weg, het heeft geen return
     // window.initMap is voor de googlemaps library de "start" functie, je void main(String[] args) :) 
 
@@ -77,26 +75,26 @@ function initMap() {
 
 const TILE_SIZE = 256;
 
-function createInfoWindowContent(latLng, zoom) {
-    const scale = 1 << zoom;
-    const worldCoordinate = project(latLng);
-    const pixelCoordinate = new google.maps.Point(
-        Math.floor(worldCoordinate.x * scale),
-        Math.floor(worldCoordinate.y * scale)
-    );
-    const tileCoordinate = new google.maps.Point(
-        Math.floor((worldCoordinate.x * scale) / TILE_SIZE),
-        Math.floor((worldCoordinate.y * scale) / TILE_SIZE)
-    );
-    return [
-        "Hogeschool Windesheim",
-        "Coordinaten: " + latLng,
-        "Zoomniveau: " + zoom,
-        "World Coordinaten: " + worldCoordinate,
-        "Pixel Coordinaten: " + pixelCoordinate,
-        "Tile Coordinaten: " + tileCoordinate,
-    ].join("<br>");
-}
+// function createInfoWindowContent(latLng, zoom) {
+//     const scale = 1 << zoom;
+//     const worldCoordinate = project(latLng);
+//     const pixelCoordinate = new google.maps.Point(
+//         Math.floor(worldCoordinate.x * scale),
+//         Math.floor(worldCoordinate.y * scale)
+//     );
+//     const tileCoordinate = new google.maps.Point(
+//         Math.floor((worldCoordinate.x * scale) / TILE_SIZE),
+//         Math.floor((worldCoordinate.y * scale) / TILE_SIZE)
+//     );
+//     return [
+//         "Hogeschool Windesheim",
+//         "Coordinaten: " + latLng,
+//         "Zoomniveau: " + zoom,
+//         "World Coordinaten: " + worldCoordinate,
+//         "Pixel Coordinaten: " + pixelCoordinate,
+//         "Tile Coordinaten: " + tileCoordinate,
+//     ].join("<br>");
+// }
 
 // The mapping between latitude, longitude and pixels is defined by the web
 // mercator projection.
@@ -118,6 +116,10 @@ function invalid(event) {
     error.removeAttribute('hidden');
 }
 
+function deleteMarkers() {
+    window.places = [];
+  }
+
 function submit(event) {
     event.preventDefault();
     fetch('http://localhost:8080/greeting', {
@@ -135,7 +137,7 @@ function submit(event) {
         })
         .then(res => res.json())
         .then(json => {
-            // console.log(json);
+            console.log(json);
             window.places = json; //toekomst: window.places setten to NULL en daarna pas waarden geven.
             createMarkersPerPlace(window.map);
             createLinesBetweenPlaces(window.map);
@@ -143,11 +145,12 @@ function submit(event) {
 }
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    const form = document.getElementById('myform'); // deze id zoekt het form op dus die moet wel bestaan
+    const form = document.getElementById('setroute'); // deze id zoekt het form op dus die moet wel bestaan
     // const error = document.getElementById('error');
     // const destination = document.getElementById('destination');
     // const thanks = document.getElementById('thanks');
 
     // destination.oninvalid = invalid; 
     form.onsubmit = submit;
+    form.onreset = initMap
 });

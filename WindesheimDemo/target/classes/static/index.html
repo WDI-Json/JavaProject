@@ -22,14 +22,9 @@
         <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form -->
         <!-- <form class="relative" id="myform" action="/greeting" th:action="@{/greeting}" th:object="${greeting}" method="post"> -->
         <div class="index-panel card-content flex-row items-center">
-            <form class="relative" id="myform">
-                <p>Iddemo: <input type="text" th:field="*{id}" /></p>
-                <p>Message:demo <input type="text" th:field="*{content}" /></p>
-                <p>Citynamedemo<input type="text" th:field="*{cityname}" placeholder="citynamedemo"></p>
-                <p>
-                    <input type="submit" value="Submit" />
-                    <input type="reset" value="Reset" />
-                </p>
+            <form class="relative" id="setroute">
+                    <input type="submit" value="Bereken Route" />
+                    <input type="reset" value="Clear"/>
             </form>
             <!-- TESTING -->
             <div class="index-panel card-content flex-row items-center">
