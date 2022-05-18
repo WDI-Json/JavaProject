@@ -20,7 +20,7 @@ public class AddressController {
     @Autowired
     private IAddressService AddressService;
 
-    @RequestMapping(value = "/showaddresses", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/address", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<String> findCities(Model model) {
 
         var cities = (List<Address>) AddressService.findAll();
