@@ -7,6 +7,9 @@
     <link href="https://cdn.jsdelivr.net/npm/fylgja@1/fylgja.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css" />
     <script type="module" src="./javascript/index.js"></script>
+    <!-- <script type="module" src="./javascript/array.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -29,141 +32,37 @@
 
             <h2>Stel Route samen</h2>
             <p th:text="'id: ' + ${customer.id}" />
-            <div class="row">
-                <table class="column">
-                    <thead>
-                        <tr>
-                            <th>OrderID</th>
-                            <th>CustomerID</th>
-                            <th>IsRetour</th>
-                            <th>Streetname</th>
-                            <th>Housenumber</th>
-                            <th>Postalcode</th>
-                            <th>City</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <!-- Windesheim -->
-                            <th scope="row">1</th>
-                            <td>1</td>
-                            <td><input type="checkbox" onclick="return false" checked /></td>
-                            <td>Campus</td>
-                            <td>2</td>
-                            <td>8017CA</td>
-                            <td>Zwolle</td>
-                        </tr>
-                        <tr>
-                            <!-- Scania -->
-                            <th scope="row">2</th>
-                            <td>2</td>
-                            <td><input type="checkbox" onclick="return false" /></td>
-                            <td>Russenweg</td>
-                            <td>5</td>
-                            <td>8014AL</td>
-                            <td>Zwolle</td>
-                        </tr>
-                    </tbody>
-                    <tr>
-                        <!-- IKEA -->
-                        <th scope="row">3</th>
-                        <td>3</td>
-                        <td><input type="checkbox" onclick="return false" /></td>
-                        <td>Diepholtstraat</td>
-                        <td>3</td>
-                        <td>8028PN</td>
-                        <td>Zwolle</td>
-                    </tr>
-                    <tr>
-                        <!-- X-ICT -->
-                        <th scope="row">4</th>
-                        <td>4</td>
-                        <td><input type="checkbox" onclick="return false" /></td>
-                        <td>Baileystraat</td>
-                        <td>14</td>
-                        <td>8013RV</td>
-                        <td>Zwolle</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <h1> <br><br><- -></h1>
-                <table class="column">
-                    <thead>
-                        <tr>
-                            <th>OrderID</th>
-                            <th>CustomerID</th>
-                            <th>IsRetour</th>
-                            <th>Streetname</th>
-                            <th>Housenumber</th>
-                            <th>Postalcode</th>
-                            <th>City</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <!-- Windesheim -->
-                            <th scope="row">1</th>
-                            <td>1</td>
-                            <td><input type="checkbox" onclick="return false" checked /></td>
-                            <td>Campus</td>
-                            <td>2</td>
-                            <td>8017CA</td>
-                            <td>Zwolle</td>
-                        </tr>
-                        <tr>
-                            <!-- Scania -->
-                            <th scope="row">2</th>
-                            <td>2</td>
-                            <td><input type="checkbox" onclick="return false" /></td>
-                            <td>Russenweg</td>
-                            <td>5</td>
-                            <td>8014AL</td>
-                            <td>Zwolle</td>
-                        </tr>
-                    </tbody>
-                    <tr>
-                        <!-- IKEA -->
-                        <th scope="row">3</th>
-                        <td>3</td>
-                        <td><input type="checkbox" onclick="return false" /></td>
-                        <td>Diepholtstraat</td>
-                        <td>3</td>
-                        <td>8028PN</td>
-                        <td>Zwolle</td>
-                    </tr>
-                    <tr>
-                        <!-- X-ICT -->
-                        <th scope="row">4</th>
-                        <td>4</td>
-                        <td><input type="checkbox" onclick="return false" /></td>
-                        <td>Baileystraat</td>
-                        <td>14</td>
-                        <td>8013RV</td>
-                        <td>Zwolle</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="row" id="rowcontent">
+                <div class="column">
+                    <ul id="selectlist">
+                        <li>loading...</li>
+                    </ul>
+                </div>
+                <div class="column">
+                    <div id="move_to_right">&gt;</div>
+                    <div>&lt;</div>
+                </div>
+                <div class="column">
+                    <ul id="routelist">
+                        <li>order_voor_route</li>
+                        <li>order_voor_route</li>
+                        <li>order_voor_route</li>
+                    </ul>
+                </div>
             </div>
             <!-- TESTING -->
             <div class="index-panel card-content flex-row items-center">
-                <form class="relative" id="customerform" action="/customer" th:action="@{/customer}"
-                    th:object="${customer}" method="post">
+                <form class="relative" id="customerform" action="/customer" th:action="@{/customer}" th:object="${customer}" method="post">
                     <!-- Nog niet gekoppeld aan model -->
                     <p>Personal Info
-                        <input type="text" name="firstname" placeholder="First name" th:field="*{firstname}"
-                            required="required">
-                        <input type="text" name="lastname" placeholder="Last name" th:field="*{lastname}"
-                            required="required">
+                        <input type="text" name="firstname" placeholder="First name" th:field="*{firstname}" required="required">
+                        <input type="text" name="lastname" placeholder="Last name" th:field="*{lastname}" required="required">
                     </p>
                     <p>Adress information
-                        <input type="text" name="streetname" placeholder="Streetname" th:field="*{streetname}"
-                            required="required">
-                        <input type="number" name="housenumber" placeholder="Housenumber" min="0"
-                            th:field="*{housenumber}" required="required">
-                        <input type="text" name="postalcode" placeholder="Postalcode" th:field="*{postalcode}"
-                            required="required">
-                        <input type="text" name="cityname" placeholder="cityname" th:field="*{cityname}"
-                            required="required">
+                        <input type="text" name="streetname" placeholder="Streetname" th:field="*{streetname}" required="required">
+                        <input type="number" name="housenumber" placeholder="Housenumber" min="0" th:field="*{housenumber}" required="required">
+                        <input type="text" name="postalcode" placeholder="Postalcode" th:field="*{postalcode}" required="required">
+                        <input type="text" name="cityname" placeholder="cityname" th:field="*{cityname}" required="required">
                         <select id="country" name="country" th:field="*{country}" required="required">
                             <option value="" selected disabled hidden>Country</option>
                             <option value="Netherlands">Netherlands</option>
@@ -179,6 +78,7 @@
                 </form>
             </div>
             <!-- TESTING -->
+            
         </div>
     </div>
     <script
