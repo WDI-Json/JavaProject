@@ -1,28 +1,7 @@
-// const = [ {
-//         title: "Hogeschool Windesheim",
-//         location: { lat: 52.49953, lng: 6.07845 }
-//     },
-//     {
-//         title: "Engelse werk",
-//         location: { lat: 52.4970232, lng: 6.06394 }
-//     },
-//     {
-//         title: "Scania",
-//         location: { lat: 52.5255141, lng: 6.0800041 }
-//     },
-//     {
-//         title: "McDonalds Noord",
-//         location: { lat: 52.5224281, lng: 6.1145818 }
-//     },
-//     {
-//         title: "Hogeschool Windesheim",
-//         location: { lat: 52.49953, lng: 6.07845 }
-//     }
-// ]
-
 
 window.selectlistSelected = null;
-
+window.routelistSelected = null
+var targetRouteArray = [];
 var routeArray = [{
         orderID: 1,
         customerID: 1,
@@ -113,17 +92,6 @@ function initMap() {
     });
     const coordInfoWindow = new google.maps.InfoWindow();
     coordInfoWindow.setPosition(zwolle);
-
-    //bij gebruik van coordinatiewindow
-    // coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
-    // coordInfoWindow.setPosition(zwolle);
-    // coordInfoWindow.open(map);
-    // map.addListener("zoom_changed", () => {
-    //     // coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
-    //     coordInfoWindow.open(map);
-    // });
-
-
     // hier exit de functie en map als variable is weg, het heeft geen return
     // window.initMap is voor de googlemaps library de "start" functie, je void main(String[] args) :)
 
@@ -132,27 +100,6 @@ function initMap() {
 }
 
 const TILE_SIZE = 256;
-
-// function createInfoWindowContent(latLng, zoom) {
-//     const scale = 1 << zoom;
-//     const worldCoordinate = project(latLng);
-//     const pixelCoordinate = new google.maps.Point(
-//         Math.floor(worldCoordinate.x * scale),
-//         Math.floor(worldCoordinate.y * scale)
-//     );
-//     const tileCoordinate = new google.maps.Point(
-//         Math.floor((worldCoordinate.x * scale) / TILE_SIZE),
-//         Math.floor((worldCoordinate.y * scale) / TILE_SIZE)
-//     );
-//     return [
-//         "Hogeschool Windesheim",
-//         "Coordinaten: " + latLng,
-//         "Zoomniveau: " + zoom,
-//         "World Coordinaten: " + worldCoordinate,
-//         "Pixel Coordinaten: " + pixelCoordinate,
-//         "Tile Coordinaten: " + tileCoordinate,
-//     ].join("<br>");
-// }
 
 // The mapping between latitude, longitude and pixels is defined by the web
 // mercator projection.
@@ -172,10 +119,6 @@ window.initMap = initMap;
 
 function invalid(event) {
     error.removeAttribute('hidden');
-}
-
-function deleteMarkers() {
-    window.places = [];
 }
 
 function submit(event) {
@@ -217,10 +160,14 @@ function renderListFromModel(list_id, model, onclick_callback) {
 
     dom_selector_voor_table.onclick = onclick_callback;
 }
-
-function prepareDataModel(model) {
-
+function moveFromSelectToRouteList(selected_id) {
+    targetRouteArray.push(routeArray[selected_id])
 }
+
+function DeleteFromRouteList(selected_id) {
+    delete(targetRouteArray[selected_id])
+}
+
 /***************** */
 
 
@@ -230,15 +177,14 @@ window.addEventListener('DOMContentLoaded', (event) => {
     form.onreset = initMap
 
 
-    // waar staat je hardcoded data?
     // 1 list_data = routeArray .map maak string value aan hier.
     // 2 get DOM selector --> "selectlist" ID van UL
 
     const listData = window.routeArray.map(value => {
         return {
             id: value.orderID,
-            value: 'ORD' + value.orderID +
-                'CUSTOMER= ' + value.customerID +
+            value: 'ORDER=' + value.orderID +
+                ' CUSTOMER= ' + value.customerID +
                 ' ISRETOUR= ' + value.isRetour +
                 ' ADDRESS= ' + value.addressObject.streetname +
                 ' ' + value.addressObject.housenumber +
@@ -246,6 +192,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 ', ' + value.addressObject.city
         }
     });
+
+    const selectedRouteData = [];
+    
 
     let selectlistClickHandler = function(e) {
         e.preventDefault();
@@ -263,19 +212,49 @@ window.addEventListener('DOMContentLoaded', (event) => {
         window.selectlistSelected = e.target.dataset.id;
     };
 
+    let routeSelectClickHandler = function(e) {
+        e.preventDefault();
+
+        // clear all li's of "selected" class
+        let parent = e.target.parentElement;
+        parent.querySelectorAll("li").forEach(li => {
+            li.classList.remove("selected");
+        });
+
+        // adds selected class to clicked li
+        e.target.classList.add("selected");
+
+        // save which one is selected in this 'global' variable for now
+        window.routelistSelected = e.target.dataset.id;
+    };
+
+    
+
     renderListFromModel("selectlist", listData, selectlistClickHandler);
+    renderListFromModel("routelist", listData, routeSelectClickHandler);
 
     const moveRightButton = document.getElementById('move_to_right');
     moveRightButton.onclick = function(e) {
         let selected_id = window.selectlistSelected;
+
         if (selected_id == null) {
             alert('please select something');
         }
-
-        // find obj
+        console.log(targetRouteArray)
         moveFromSelectToRouteList(selected_id);
-        // this has to move 
     };
+
+    const moveLeftButton = document.getElementById('move_to_left');
+    moveLeftButton.onclick = function(e) {
+        let selected_id = window.routelistSelected;
+
+        if (selected_id == null) {
+            alert('please select something');
+        }
+        console.log(selectedRouteData)
+        DeleteFromRouteList(selected_id);
+    };
+
 
 });
 
