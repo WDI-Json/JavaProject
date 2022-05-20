@@ -203,25 +203,51 @@ const listData = window.routeArray.map((value) => {
     return {
         id: value.orderID,
         value:
-            "ORDER=" +
+            "ORDER:" +
             value.orderID +
-            " CUSTOMER= " +
+            ", CUSTOMER: " +
             value.customerID +
-            " ISRETOUR= " +
+            ", ISRETOUR: " +
             value.isRetour +
-            " ADDRESS= " +
+            ", ADDRESS: " +
             value.addressObject.streetname +
             " " +
             value.addressObject.housenumber +
             " " +
             value.addressObject.postalcode +
-            ", " +
+            " " +
             value.addressObject.city,
+        geolocation:
+            value.addressObject.geolocation.lat +
+            "," +
+            value.addressObject.geolocation.lng,
     };
 });
 
 function setNewMap(input) {
     const data = JSON.parse(input);
-    console.log('todo map setter');
-    console.log({ data });
+    console.log(data);
+
+    postbody = [];
+    for (var i = 0; i < data.length; i++) {
+        postbody.push(
+            JSON.stringify({
+                id: data[i].id,
+                value: data[i].value,
+                geolocation: data[i].geolocation,
+            })
+        );
+    }
+
+    fetch("http://localhost:8080/greeting", {
+        method: "POST",
+        body: postbody,
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        },
+    });
 }
+
+
+
+
