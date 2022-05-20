@@ -239,7 +239,7 @@ function setNewMap(input) {
         );
     }
 
-    fetch("http://localhost:8080/greeting", {
+    fetch("http://localhost:8080/response", {
         method: "POST",
         body: postbody,
         headers: {
