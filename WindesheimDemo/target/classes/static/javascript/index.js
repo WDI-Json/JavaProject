@@ -8,7 +8,7 @@ var routeArray = [
         orderID: 1,
         customerID: 1,
         isRetour: false,
-        name: "Hogeschool Windesheim",
+        name: "William Campus",
         addressObject: {
             streetname: "campus",
             housenumber: 2,
@@ -21,39 +21,39 @@ var routeArray = [
         orderID: 2,
         customerID: 2,
         isRetour: false,
-        name: "Hogeschool Windesheim",
+        name: "Barend Drecht",
         addressObject: {
-            streetname: "campus",
-            housenumber: 2,
-            postalcode: "8017CA",
-            city: "Zwolle",
-            geolocation: { lat: 52.49953, lng: 6.07845 },
+            streetname: "",
+            housenumber: "",
+            postalcode: "",
+            city: "Barendrecht",
+            geolocation: { lat: 51.853, lng: 4.4539 },
         },
     },
     {
         orderID: 3,
         customerID: 3,
         isRetour: false,
-        name: "Hogeschool Windesheim",
+        name: "scania",
         addressObject: {
-            streetname: "campus",
-            housenumber: 2,
-            postalcode: "8017CA",
+            streetname: "",
+            housenumber: "",
+            postalcode: "",
             city: "Zwolle",
-            geolocation: { lat: 52.49953, lng: 6.07845 },
+            geolocation: { lat: 52.5255141, lng: 6.0800041 },
         },
     },
     {
         orderID: 4,
         customerID: 4,
         isRetour: true,
-        name: "Hogeschool Windesheim",
+        name: "Zoetermeer",
         addressObject: {
             streetname: "campus",
             housenumber: 2,
             postalcode: "8017CA",
-            city: "Zwolle",
-            geolocation: { lat: 52.49953, lng: 6.07845 },
+            city: "Zoetermeer",
+            geolocation: { lat: 52.0621451, lng: 4.4165747 },
         },
     },
     {
@@ -210,6 +210,7 @@ function setCreatedRouteOnMap(postbody) {
         .then((res) => res.json())
         .then((json) => {
             console.log("data te versturen" + json);
+            initMap();
             window.places = json;
             createMarkersPerPlace(window.map);
             createLinesBetweenPlaces(window.map);
@@ -236,14 +237,15 @@ const listData = window.routeArray.map((value) => {
             value.addressObject.city,
         location: {
             lat: value.addressObject.geolocation.lat,
-            lng: value.addressObject.geolocation.lng
-        }
+            lng: value.addressObject.geolocation.lng,
+        },
     };
 });
 
 function setNewMap(input) {
     const data = JSON.parse(input);
     postbody = JSON.stringify(data);
+    // postbody = data; //werkt ook check ff
     // for (var i = 0; i < data.length; i++) {
     //     postbody.push(
     //         JSON.stringify({
@@ -253,7 +255,7 @@ function setNewMap(input) {
     //         })
     //     );
     // }
-    console.log("postbody: "  + postbody);
+    console.log("postbody: " + postbody);
 
     console.log(setCreatedRouteOnMap(postbody));
 }
