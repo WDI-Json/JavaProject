@@ -199,6 +199,23 @@ function setRouteOnMap() {
         });
 }
 
+function setCreatedRouteOnMap(postbody) {
+    fetch("http://localhost:8080/response", {
+        method: "POST",
+        body: postbody,
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        },
+    })
+        .then((res) => res.json())
+        .then((json) => {
+            console.log("data te versturen" + json);
+            window.places = json;
+            createMarkersPerPlace(window.map);
+            createLinesBetweenPlaces(window.map);
+        });
+}
+
 const listData = window.routeArray.map((value) => {
     return {
         id: value.orderID,
@@ -217,37 +234,26 @@ const listData = window.routeArray.map((value) => {
             value.addressObject.postalcode +
             " " +
             value.addressObject.city,
-        geolocation:
-            value.addressObject.geolocation.lat +
-            "," +
-            value.addressObject.geolocation.lng,
+        location: {
+            lat: value.addressObject.geolocation.lat,
+            lng: value.addressObject.geolocation.lng
+        }
     };
 });
 
 function setNewMap(input) {
     const data = JSON.parse(input);
-    console.log(data);
+    postbody = JSON.stringify(data);
+    // for (var i = 0; i < data.length; i++) {
+    //     postbody.push(
+    //         JSON.stringify({
+    //             id: data[i].id,
+    //             value: data[i].value,
+    //             geolocation: data[i].geolocation,
+    //         })
+    //     );
+    // }
+    console.log("postbody: "  + postbody);
 
-    postbody = [];
-    for (var i = 0; i < data.length; i++) {
-        postbody.push(
-            JSON.stringify({
-                id: data[i].id,
-                value: data[i].value,
-                geolocation: data[i].geolocation,
-            })
-        );
-    }
-
-    fetch("http://localhost:8080/response", {
-        method: "POST",
-        body: postbody,
-        headers: {
-            "Content-type": "application/json; charset=UTF-8",
-        },
-    });
+    console.log(setCreatedRouteOnMap(postbody));
 }
-
-
-
-
