@@ -15,14 +15,14 @@ public class Order {
         this.customer = customer;
         this.readyforshipment = false;
         this.isreturnorder = false;
-        this.orderID = getNextUniqueID();
+        orderID = getNextUniqueID();
     }
 
     public static String getNextUniqueID() {
-        int id = Integer.parseInt(orderID);     
-        ++id;                                    
-        orderID = Integer.toString(id);         
-        return orderID;                        
+        int id = Integer.parseInt(orderID);
+        ++id;
+        orderID = Integer.toString(id);
+        return orderID;
     }
 
     public Customer getCustomer() {
@@ -60,8 +60,13 @@ public class Order {
     public void setItemsBought(ArrayList<String> itemsBought) {
         this.itemsBought = itemsBought;
     }
-    
+
     public void setReadyforshipment(Boolean readyforshipment) {
         this.readyforshipment = readyforshipment;
+    }
+
+    @Override
+    public String toString() {
+        return this.orderID + customer.toString();
     }
 }

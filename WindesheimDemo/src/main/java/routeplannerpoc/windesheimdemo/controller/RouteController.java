@@ -21,5 +21,11 @@ public class RouteController {
 
       return new ResponseEntity<String>(input,HttpStatus.OK);
   }
+
+  @RequestMapping(value = "/availableroutes", method = RequestMethod.GET, produces = "application/json")
+  public ResponseEntity<String> response(@RequestBody String order) {
+
+      return new ResponseEntity<String>(order, HttpStatus.OK);
+  }
 }
 
