@@ -1,18 +1,23 @@
 package routeplannerpoc.windesheimdemo;
 
-import java.util.ArrayList;
+
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import org.springframework.context.annotation.ComponentScan;
+
 import routeplannerpoc.windesheimdemo.model.Customer;
 import routeplannerpoc.windesheimdemo.model.Order;
 
-@SpringBootApplication
-public class WindesheimDemoApplication {
 
+@SpringBootApplication
+@ComponentScan(basePackages = { "routeplannerpoc.windesheimdemo" })
+public class WindesheimDemoApplication {
 	public static void main(String[] args) {
+    System.out.println("HIJ DOET IETS");
 		SpringApplication.run(WindesheimDemoApplication.class, args);
+
 
     Customer bob = new Customer(
       "Bob", "Bobson",
@@ -21,12 +26,9 @@ public class WindesheimDemoApplication {
       17,
       "Zwolle",
       "8022BN");
-      ArrayList<String> art = new ArrayList<String>();
-      art.add("Product1");
-      art.add("product2");
-      art.add("Product3");
-      art.add("Product4");
-    Order order = new Order(bob, art, false, false);
+    Order order = new Order(bob, false, false);
+
+
     System.out.println(order.toString());
 	}
 }
