@@ -1,35 +1,119 @@
-// const places = [{
-//         title: "Hogeschool Windesheim",
-//         location: { lat: 52.49953, lng: 6.07845 }
-//     },
-//     {
-//         title: "Engelse werk",
-//         location: { lat: 52.4970232, lng: 6.06394 }
-//     },
-//     {
-//         title: "Scania",
-//         location: { lat: 52.5255141, lng: 6.0800041 }
-//     },
-//     {
-//         title: "McDonalds Noord",
-//         location: { lat: 52.5224281, lng: 6.1145818 }
-//     },
-//     {
-//         title: "Hogeschool Windesheim",
-//         location: { lat: 52.49953, lng: 6.07845 }
-//     }
-// ]
+window.selectlistSelected = null;
+window.routelistSelected = null;
 
-function initializePlaces(locations) {
-    windows.places = [];
-    window.places = locations;
-}
+var targetRouteArray = [];
 
+var routeArray = [
+    {
+        orderID: 1,
+        customerID: 1,
+        isRetour: false,
+        name: "William Campus",
+        addressObject: {
+            streetname: "campus",
+            housenumber: 2,
+            postalcode: "8017CA",
+            city: "Zwolle",
+            geolocation: { lat: 52.49953, lng: 6.07845 },
+        },
+    },
+    {
+        orderID: 2,
+        customerID: 2,
+        isRetour: false,
+        name: "Barend Drecht",
+        addressObject: {
+            streetname: "",
+            housenumber: "",
+            postalcode: "",
+            city: "Barendrecht",
+            geolocation: { lat: 51.853, lng: 4.4539 },
+        },
+    },
+    {
+        orderID: 3,
+        customerID: 3,
+        isRetour: false,
+        name: "scania",
+        addressObject: {
+            streetname: "",
+            housenumber: "",
+            postalcode: "",
+            city: "Zwolle",
+            geolocation: { lat: 52.5255141, lng: 6.0800041 },
+        },
+    },
+    {
+        orderID: 4,
+        customerID: 4,
+        isRetour: true,
+        name: "Zoetermeer",
+        addressObject: {
+            streetname: "campus",
+            housenumber: 2,
+            postalcode: "8017CA",
+            city: "Zoetermeer",
+            geolocation: { lat: 52.0621451, lng: 4.4165747 },
+        },
+    },
+    {
+        orderID: 5,
+        customerID: 4,
+        isRetour: true,
+        name: "Hogeschool Windesheim",
+        addressObject: {
+            streetname: "campus",
+            housenumber: 2,
+            postalcode: "8017CA",
+            city: "Zwolle",
+            geolocation: { lat: 52.49953, lng: 6.07845 },
+        },
+    },
+    {
+        orderID: 6,
+        customerID: 4,
+        isRetour: true,
+        name: "Hogeschool Windesheim",
+        addressObject: {
+            streetname: "campus",
+            housenumber: 2,
+            postalcode: "8017CA",
+            city: "Zwolle",
+            geolocation: { lat: 52.49953, lng: 6.07845 },
+        },
+    },
+    {
+        orderID: 7,
+        customerID: 4,
+        isRetour: true,
+        name: "Hogeschool Windesheim",
+        addressObject: {
+            streetname: "campus",
+            housenumber: 2,
+            postalcode: "8017CA",
+            city: "Zwolle",
+            geolocation: { lat: 52.49953, lng: 6.07845 },
+        },
+    },
+    {
+        orderID: 8,
+        customerID: 4,
+        isRetour: true,
+        name: "Hogeschool Windesheim",
+        addressObject: {
+            streetname: "campus",
+            housenumber: 2,
+            postalcode: "8017CA",
+            city: "Zwolle",
+            geolocation: { lat: 52.49953, lng: 6.07845 },
+        },
+    },
+];
 
+window.routeArray = routeArray;
 
 function createMarkersPerPlace(map) {
-    for (let { title, location }
-        of window.places) {
+    for (let { title, location } of window.places) {
         let position = new google.maps.LatLng(location);
         new google.maps.Marker({ position, map, title });
     }
@@ -38,8 +122,7 @@ function createMarkersPerPlace(map) {
 // draws polylines between window.places
 // see: https://developers.google.com/maps/documentation/javascript/examples/polyline-simple
 function createLinesBetweenPlaces(map) {
-
-    let path = window.places.map(place => place.location)
+    let path = window.places.map((place) => place.location);
     const transportPath = new google.maps.Polyline({
         path,
         geodesic: true,
@@ -52,51 +135,25 @@ function createLinesBetweenPlaces(map) {
 }
 
 function initMap() {
-    const zwolle = new google.maps.LatLng(52.49953, 6.07845);
+    const zwolle = new google.maps.LatLng(
+        52.514622453500046,
+        6.094557495652405
+    );
 
     // hier define je map.
     const map = new google.maps.Map(document.getElementById("map"), {
         center: zwolle,
-        zoom: 12,
+        zoom: 13,
     });
     const coordInfoWindow = new google.maps.InfoWindow();
-
-    coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
     coordInfoWindow.setPosition(zwolle);
-    coordInfoWindow.open(map);
-    map.addListener("zoom_changed", () => {
-        coordInfoWindow.setContent(createInfoWindowContent(zwolle, map.getZoom()));
-        coordInfoWindow.open(map);
-    });
     // hier exit de functie en map als variable is weg, het heeft geen return
-    // window.initMap is voor de googlemaps library de "start" functie, je void main(String[] args) :) 
+    // window.initMap is voor de googlemaps library de "start" functie, je void main(String[] args) :)
 
     window.map = map;
-
 }
 
 const TILE_SIZE = 256;
-
-function createInfoWindowContent(latLng, zoom) {
-    const scale = 1 << zoom;
-    const worldCoordinate = project(latLng);
-    const pixelCoordinate = new google.maps.Point(
-        Math.floor(worldCoordinate.x * scale),
-        Math.floor(worldCoordinate.y * scale)
-    );
-    const tileCoordinate = new google.maps.Point(
-        Math.floor((worldCoordinate.x * scale) / TILE_SIZE),
-        Math.floor((worldCoordinate.y * scale) / TILE_SIZE)
-    );
-    return [
-        "Hogeschool Windesheim",
-        "Coordinaten: " + latLng,
-        "Zoomniveau: " + zoom,
-        "World Coordinaten: " + worldCoordinate,
-        "Pixel Coordinaten: " + pixelCoordinate,
-        "Tile Coordinaten: " + tileCoordinate,
-    ].join("<br>");
-}
 
 // The mapping between latitude, longitude and pixels is defined by the web
 // mercator projection.
@@ -115,39 +172,90 @@ function project(latLng) {
 window.initMap = initMap;
 
 function invalid(event) {
-    error.removeAttribute('hidden');
+    error.removeAttribute("hidden");
 }
 
-function submit(event) {
-    event.preventDefault();
-    fetch('http://localhost:8080/greeting', {
-            method: 'POST',
-            body: JSON.stringify( // dit ga je straks vullen met je form input fields (geolocs in geolocs uit)
-                {
-                    title: 'foo',
-                    body: 'bar',
-                    userId: 1
-                }
-            ),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8'
+function setRouteOnMap() {
+    fetch("http://localhost:8080/greeting", {
+        method: "POST",
+        body: JSON.stringify(
+            // dit ga je straks vullen met je form input fields (geolocs in geolocs uit)
+            {
+                title: "foo",
+                body: "bar",
+                userId: 1,
             }
-        })
-        .then(res => res.json())
-        .then(json => {
-            // console.log(json);
-            window.places = json; //toekomst: window.places setten to NULL en daarna pas waarden geven.
+        ),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        },
+    })
+        .then((res) => res.json())
+        .then((json) => {
+            console.log(json);
+            window.places = json;
             createMarkersPerPlace(window.map);
             createLinesBetweenPlaces(window.map);
-        })
+        });
 }
 
-window.addEventListener('DOMContentLoaded', (event) => {
-    const form = document.getElementById('myform'); // deze id zoekt het form op dus die moet wel bestaan
-    // const error = document.getElementById('error');
-    // const destination = document.getElementById('destination');
-    // const thanks = document.getElementById('thanks');
+function setCreatedRouteOnMap(postbody) {
+    fetch("http://localhost:8080/response", {
+        method: "POST",
+        body: postbody,
+        headers: {
+            "Content-type": "application/json; charset=UTF-8",
+        },
+    })
+        .then((res) => res.json())
+        .then((json) => {
+            console.log("data te versturen" + json);
+            initMap();
+            window.places = json;
+            createMarkersPerPlace(window.map);
+            createLinesBetweenPlaces(window.map);
+        });
+}
 
-    // destination.oninvalid = invalid; 
-    form.onsubmit = submit;
+const listData = window.routeArray.map((value) => {
+    return {
+        id: value.orderID,
+        value:
+            "ORDER:" +
+            value.orderID +
+            ", CUSTOMER: " +
+            value.customerID +
+            ", ISRETOUR: " +
+            value.isRetour +
+            ", ADDRESS: " +
+            value.addressObject.streetname +
+            " " +
+            value.addressObject.housenumber +
+            " " +
+            value.addressObject.postalcode +
+            " " +
+            value.addressObject.city,
+        location: {
+            lat: value.addressObject.geolocation.lat,
+            lng: value.addressObject.geolocation.lng,
+        },
+    };
 });
+
+function setNewMap(input) {
+    const data = JSON.parse(input);
+    postbody = JSON.stringify(data);
+    // postbody = data; //werkt ook check ff
+    // for (var i = 0; i < data.length; i++) {
+    //     postbody.push(
+    //         JSON.stringify({
+    //             id: data[i].id,
+    //             value: data[i].value,
+    //             geolocation: data[i].geolocation,
+    //         })
+    //     );
+    // }
+    console.log("postbody: " + postbody);
+
+    console.log(setCreatedRouteOnMap(postbody));
+}

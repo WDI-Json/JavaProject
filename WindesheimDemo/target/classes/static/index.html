@@ -2,66 +2,193 @@
 <html lang="nl">
 
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NerdyGadgetsRouteplanner</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <link href="https://cdn.jsdelivr.net/npm/fylgja@1/fylgja.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css" />
-    <script type="module" src="./javascript/index.js"></script>
+    <script src="./javascript/index.js"></script>
+    <!-- TODO: remove jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 </head>
 
 <body>
-    <div class="topnav">
-        <a id="logo">
-            <img id="logoimage" src="./css/assets/logo.jpeg" alt="logo"></a>
-        <a id="space"></a>
-        <a class="active">Login</a>
-    </div>
-    <div class="content">
-        <h1>Startpunt routeplanning</h1>
-        <div id="map"></div>
-        <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form -->
-        <!-- <form class="relative" id="myform" action="/greeting" th:action="@{/greeting}" th:object="${greeting}" method="post"> -->
-        <div class="index-panel card-content flex-row items-center">
-            <form class="relative" id="myform">
-                <p>Iddemo: <input type="text" th:field="*{id}" /></p>
-                <p>Message:demo <input type="text" th:field="*{content}" /></p>
-                <p>Citynamedemo<input type="text" th:field="*{cityname}" placeholder="citynamedemo"></p>
-                <p>
-                    <input type="submit" value="Submit" />
-                    <input type="reset" value="Reset" />
-                </p>
-            </form>
-            <!-- TESTING -->
-            <div class="index-panel card-content flex-row items-center">
-                <form class="relative" id="customerform" action="/customer" th:action="@{/customer}" th:object="${customer}" method="post">
-                    <!-- Nog niet gekoppeld aan model -->
-                    <p>Personal Info
-                        <input type="text" name="firstname" placeholder="First name" th:field="*{firstname}" required="required">
-                        <input type="text" name="lastname" placeholder="Last name" th:field="*{lastname}" required="required">
-                    </p>
-                    <p>Adress information
-                        <input type="text" name="streetname" placeholder="Streetname" th:field="*{streetname}" required="required">
-                        <input type="number" name="housenumber" placeholder="Housenumber" min="0" th:field="*{housenumber}" required="required">
-                        <input type="text" name="postalcode" placeholder="Postalcode" th:field="*{postalcode}" required="required">
-                        <input type="text" name="cityname" placeholder="cityname" th:field="*{cityname}" required="required">
-                        <select id="country" name="country" th:field="*{country}" required="required">
+    <header id="page-header" class="sticky top-0">
+        <div class="container flex items-center justify-between py-4">
+            <a id="logo">
+                <img src="./css/assets/logo.jpeg" alt="NerdyGadgetsRouteplanner" width="150" height="74">
+            </a>
+            <button class="btn -theme" disabled>Login</button>
+        </div>
+    </header>
+    <main id="page-content" x-data="{ open: false }">
+        <h1 class="aria-only">Startpunt routeplanning</h1>
+
+        <section id="map-section" style="--bg: #eee;">
+            <div class="container py-4">
+                <div id="map"></div>
+                <div class="mt-4 flex" x-data>
+                    <button class="btn -theme me-4" @click="open = true">Nieuw route</button>
+                    <button class="btn -theme me-4" @click="setRouteOnMap()">Bestaande route</button>
+                    <button class="btn -outline ms-auto" @click="initMap()">Clear</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="routes" class="container my-4" x-show="open">
+            <div class="mb-4" x-data="routelist()">
+                <h2>Stel Route samen</h2>
+                <div id="rowcontent">
+                    <div class="card card-content thin-scrollbar overflow-y-auto">
+                        <ul id="selectlist" class="select-list list-style -none">
+                            <li x-show="!unselectedRouteList.length" class="py-1 px-2">loading...</li>
+                            <template x-for="route in unselectedRouteList">
+                                <li
+                                    :id="route.id"
+                                    x-text="route.value"
+                                    :data-route="JSON.stringify(route)"
+                                    @click="selectRoute()"
+                                    class="text-nowrap overflow-x-hidden py-1 px-2"
+                                ></li>
+                            </template>
+                        </ul>
+                    </div>
+                    <div class="card card-content items-center justify-center">
+                        <div class="flex flex-col space-y-4">
+                            <button @click.prevent="addRoutes()" class="btn -theme">Add</button>
+                            <button @click.prevent="removeRoutes()" class="btn -outline">Clear</button>
+                        </div>
+                    </div>
+                    <div class="card card-content thin-scrollbar overflow-auto">
+                        <ul id="routelist" class="select-list list-style -none">
+                            <li x-show="!selectedRouteList.length" class="py-1 px-2">Selecteer een order</li>
+                            <template x-for="route in selectedRouteList">
+                                <li :id="route.id" x-text="route.value" :data-route="JSON.stringify(route)" class="text-nowrap overflow-x-hidden py-1 px-2"></li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+                <button id="setroute" @click="open = false; setNewMap(`${JSON.stringify(selectedRouteList)}`);" class="btn -theme">Bereken Route</button>
+            </div>
+        </section>
+
+        <section id="new-address" class="container my-4">
+            <div class="card">
+                <div class="card-content">
+                    <form class="relative" id="customerform" action="/customer" th:action="@{/customer}"
+                        th:object="${customer}" method="post">
+                        <fieldset>
+                            <legend>Personal Info</legend>
+                            <div class="flex space-x-2">
+                                <input type="text" name="firstname" placeholder="First name" th:field="*{firstname}"
+                                    required="required">
+                                <input type="text" name="lastname" placeholder="Last name" th:field="*{lastname}"
+                                    required="required">
+                            </div>
+                        </fieldset>
+                        <fieldset class="space-y-2">
+                            <legend>Adress information</legend>
+                            <div class="auto-grid">
+                                <input type="text" name="streetname" placeholder="Streetname" th:field="*{streetname}"
+                                    required="required">
+                                <input type="number" name="housenumber" placeholder="Housenumber" min="0"
+                                    th:field="*{housenumber}" required="required">
+                                <input type="text" name="postalcode" placeholder="Postalcode" th:field="*{postalcode}"
+                                    required="required">
+                                <input type="text" name="cityname" placeholder="cityname" th:field="*{cityname}"
+                                    required="required">
+                                <select id="country" name="country" th:field="*{country}" required="required">
                                     <option value="" selected disabled hidden>Country</option>
                                     <option value="Netherlands">Netherlands</option>
                                     <option value="Germany">Germany</option>
                                     <option value="Belgium">Belgium</option>
                                     <option value="France">France</option>
                                     <option value="Luxembourg">Luxembourg</option>
-                            </p>
-                                <p>
-                                    <input type="submit" value="Submit" />
-                                    <input type="reset" value="Reset" />
-                                </p>
-                        </form>
-                    </div>
-                    <!-- TESTING -->
+                                </select>
+                            </div>
+                        </fieldset>
+                        <input type="submit" value="Submit" class="btn -theme">
+                        <input type="reset" value="Reset" class="btn -outline">
+                    </form>
+                </div>
             </div>
+        </section>
+    </main>
+    <footer class="container py-4" x-data>
+        <div>
+            Copyright© Wouter Dijks (S1058250)
+            <span x-text="new Date().getFullYear()"></span>
         </div>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly" defer></script>
-        </div>
-    </body>
+    </footer>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+        defer></script>
+    </div>
+    <script>
+        console.log(listData);
+
+        document.addEventListener('alpine:init', () => {
+            const activeClass = 'selected';
+
+            function handleSelectedData(el, itemData, listData) {
+                if (el.classList.contains(activeClass)) {
+                    el.classList.remove(activeClass);
+                    const index = listData.indexOf(itemData);
+                    if (index !== -1) {
+                        listData.splice(index, 1);
+                    }
+                    return;
+                }
+
+                el.classList.add(activeClass);
+                listData.push(itemData);
+                return;
+            }
+
+            Alpine.data('routelist', () => ({
+                unselectedRouteList: listData,
+                unselectedRouteListAdding: [],
+                selectedRouteList: [],
+                selectedRouteListAdding: [],
+
+                addRoutes() {
+                    if (!this.unselectedRouteListAdding.length) return;
+
+                    this.selectedRouteList = this.unselectedRouteListAdding;
+                    const selectItem = document.querySelectorAll('#selectlist li');
+                    selectItem.forEach(el => {
+                        el.classList.remove(activeClass);
+                    })
+                    this.unselectedRouteListAdding = [];
+                },
+
+                removeRoutes() {
+                    this.selectedRouteList = [];
+                },
+
+                selectRoute() {
+                    const el = this.$el;
+                    const itemData = JSON.parse(el.getAttribute('data-route'));
+                    const listData = this.unselectedRouteListAdding;
+
+                    handleSelectedData(el, itemData, listData);
+                },
+
+                unselectRoute() {
+                    const el = this.$el;
+                    const itemData = JSON.parse(el.getAttribute('data-route'));
+                    const listData = this.selectedRouteListAdding;
+
+                    handleSelectedData(el, itemData, listData);
+                }
+            }))
+        })
+    </script>
+    <script src="https://unpkg.com/alpinejs@3.10.2/dist/cdn.min.js"></script>
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form -->
+    <!-- <form class="relative" id="myform" action="/greeting" th:action="@{/greeting}" th:object="${greeting}" method="post"> -->
+</body>
+
 </html>
