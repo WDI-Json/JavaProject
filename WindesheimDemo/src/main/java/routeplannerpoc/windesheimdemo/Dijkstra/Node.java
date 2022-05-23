@@ -1,59 +1,29 @@
 package routeplannerpoc.windesheimdemo.Dijkstra;
 
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 public class Node {
+  public String name;
+  public double x;
+  public double y;
 
-    private String name;
+  public Node(String name, double x, double y) {
+      this.name = name;
+      this.x = x;
+      this.y = y;
+  }
 
-    private LinkedList<Node> shortestPath = new LinkedList<>();
+  public double distance(Node otherNode) {
+      double ac = Math.abs(otherNode.y - this.y);
+      double cb = Math.abs(otherNode.x - this.x);
+      return Math.hypot(ac, cb);
+  }
 
-    private Integer distance = Integer.MAX_VALUE;
+  public double getX() {
+      return x;
+  }
 
-    private Map<Node, Integer> adjacentNodes = new HashMap<>();
-
-    public Node(String name) {
-        this.name = name;
-    }
-
-    public void addDestination(Node destination, int distance) {
-        adjacentNodes.put(destination, distance);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Map<Node, Integer> getAdjacentNodes() {
-        return adjacentNodes;
-    }
-
-    public void setAdjacentNodes(Map<Node, Integer> adjacentNodes) {
-        this.adjacentNodes = adjacentNodes;
-    }
-
-    public Integer getDistance() {
-        return distance;
-    }
-
-    public void setDistance(Integer distance) {
-        this.distance = distance;
-    }
-
-    public List<Node> getShortestPath() {
-        return shortestPath;
-    }
-
-    public void setShortestPath(LinkedList<Node> shortestPath) {
-        this.shortestPath = shortestPath;
-    }
-
+  public double getY() {
+      return y;
+  }
 }
+
