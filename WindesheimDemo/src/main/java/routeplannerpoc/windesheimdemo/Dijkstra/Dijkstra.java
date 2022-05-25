@@ -1,73 +1,86 @@
 package routeplannerpoc.windesheimdemo.Dijkstra;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.lang.Math;
+import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Collections;
+import java.util.stream.Stream;
+import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 public class Dijkstra {
+  public static void DijkstraRouteOrder(Node nodes[]) {
+    Node firstNode = nodes[0];
 
-  public static Graph calculateShortestPathFromSource(Graph graph, Node source) {
+    ArrayList<Node> nodesList = new ArrayList<>(Arrays.asList(nodes));
 
-    source.setDistance(0);
-
-    Set<Node> settledNodes = new HashSet<>();
-    Set<Node> unsettledNodes = new HashSet<>();
-    unsettledNodes.add(source);
-
-    while (unsettledNodes.size() != 0) {
-      Node currentNode = getLowestDistanceNode(unsettledNodes);
-      unsettledNodes.remove(currentNode);
-      for (Entry<Node, Integer> adjacencyPair : currentNode.getAdjacentNodes().entrySet()) {
-        Node adjacentNode = adjacencyPair.getKey();
-        Integer edgeWeigh = adjacencyPair.getValue();
-
-        if (!settledNodes.contains(adjacentNode)) {
-          CalculateMinimumDistance(adjacentNode, edgeWeigh, currentNode);
-          unsettledNodes.add(adjacentNode);
+    // setup distance matrix (nodeA,nodeB = distance between the two)
+    HashMap<Node, HashMap<Node, Double>> distances = new HashMap<>();
+    for (Node node : nodes) {
+        for (Node otherNode : nodes) {
+            // System.out.println(node.name + " -> " + otherNode.name);
+            var mapToOtherNodes = distances.getOrDefault(node, new HashMap<>());
+            var distanceToOther = node.distance(otherNode);
+            mapToOtherNodes.put(otherNode, distanceToOther);
+            distances.put(node, mapToOtherNodes);
         }
-      }
-      settledNodes.add(currentNode);
     }
-    return graph;
-  }
+    // printDistances(distances);
 
-  private static void CalculateMinimumDistance(Node evaluationNode, Integer edgeWeigh, Node sourceNode) {
-    Integer sourceDistance = sourceNode.getDistance();
-    if (sourceDistance + edgeWeigh < evaluationNode.getDistance()) {
-      evaluationNode.setDistance(sourceDistance + edgeWeigh);
-      LinkedList<Node> shortestPath = new LinkedList<>(sourceNode.getShortestPath());
-      shortestPath.add(sourceNode);
-      evaluationNode.setShortestPath(shortestPath);
-    }
-  }
+    ArrayList<Node> nodesWithoutStart = (ArrayList<Node>) nodesList.clone();
+    nodesWithoutStart.remove(firstNode);
 
-  private static Node getLowestDistanceNode(Set<Node> unsettledNodes) {
-    Node lowestDistanceNode = null;
-    int lowestDistance = Integer.MAX_VALUE;
-    for (Node node : unsettledNodes) {
-      int nodeDistance = node.getDistance();
-      if (nodeDistance < lowestDistance) {
-        lowestDistance = nodeDistance;
-        lowestDistanceNode = node;
-      }
+    var possiblePaths = Permutation.all(nodesWithoutStart);
+    for (List<Node> path : possiblePaths) {
+        path.add(0, firstNode);
+        var totalDistance = calcTotalDistance(distances, path);
+        System.out.println("total distance for path " + humanPathFromNodeList(path) + " = " + totalDistance);
     }
-    return lowestDistanceNode;
-  }
 
-  public double CalculateDistance(double lat1, double lon1, double lat2, double lon2, char unit) {
-    double theta = lon1 - lon2;
-    double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2))
-        + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
-    dist = Math.acos(dist);
-    dist = Math.toRadians(dist);
-    dist = dist * 60 * 1.1515;
-    if (unit == 'K') {
-      dist = dist * 1.609344;
-    } else if (unit == 'N') {
-      dist = dist * 0.8684;
+}
+
+public static <T> Stream<List<T>> sliding(List<T> list, int size) {
+    if (size > list.size()) {
+        return Stream.empty();
     }
-    return dist;
-  }
+    return IntStream
+            .range(0, list.size() - size + 1)
+            .mapToObj(start -> list.subList(start, start + size));
+}
+
+public static double calcTotalDistance(HashMap<Node, HashMap<Node, Double>> distances, List<Node> path) {
+    var total = 0.0;
+    for (List<Node> nodes : sliding(path, 2).toList()) {
+        Node from = nodes.get(0);
+        Node to = nodes.get(1);
+        // System.out.println("distance between " + from.name + " -> " + to.name);
+        total += distances.get(from).get(to);
+    }
+    return total;
+}
+
+public static String humanPathFromNodeList(List<Node> path) {
+    var output = "";
+    for (Node n : path) {
+        output += n.name;
+    }
+    return output;
+}
+
+public static void printDistances(HashMap<Node, HashMap<Node, Double>> distances) {
+    for (HashMap.Entry<Node, HashMap<Node, Double>> entry : distances.entrySet()) {
+        Node from = entry.getKey();
+        HashMap<Node, Double> dists = entry.getValue();
+
+        System.out.println("FROM " + from.name);
+        for (HashMap.Entry<Node, Double> toNodes : dists.entrySet()) {
+            Node to = toNodes.getKey();
+            Double dist = toNodes.getValue();
+
+            System.out.println("\t" + to.name + "\t" + dist);
+        }
+    }
+}
 }
