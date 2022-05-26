@@ -33,7 +33,7 @@ public class Dijkstra {
     for (List<Node> path : possiblePaths) {
       path.add(0, firstNode);
       var totalDistance = calcTotalDistance(distances, path);
-      System.out.println("total distance for path " + humanPathFromNodeList(path) + " = " + totalDistance);
+      System.out.println("total distance for path " + humanPathFromNodeList(path) + " = " + totalDistance + "\n");
       if (previousDistance == 0.00 || previousDistance > totalDistance) {
         // System.out.println("Current Score " + previousDistance);
         optimalPath = path;
@@ -44,7 +44,7 @@ public class Dijkstra {
       }
 
     }
-    System.out.println("The optimal route with a score of " + calcTotalDistance(distances, optimalPath) + "");
+    System.out.println("The optimal route with a score of " + calcTotalDistance(distances, optimalPath) + "\n");
     for (Node name : optimalPath) {
       System.out.print(name);
     }
