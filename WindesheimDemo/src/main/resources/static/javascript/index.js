@@ -141,7 +141,7 @@ window.routeArray = routeArray;
 function createMarkersPerPlace(map) {
     for (let { title, location } of window.places) {
         let position = new google.maps.LatLng(location);
-        new google.maps.Marker({position, map, title });
+        new google.maps.Marker({ position, map, title });
     }
 }
 
@@ -261,7 +261,8 @@ const listData = window.routeArray.map((value) => {
             value.addressObject.postalcode +
             " " +
             value.addressObject.city,
-        routename: "CUSTOMER " + value.customerID + "FROM " + value.addressObject.city,
+        routename:
+            "CUSTOMER " + value.customerID + "FROM " + value.addressObject.city,
         location: {
             lat: value.addressObject.geolocation.lat,
             lng: value.addressObject.geolocation.lng,
@@ -272,16 +273,6 @@ const listData = window.routeArray.map((value) => {
 function setNewMap(input) {
     const data = JSON.parse(input);
     postbody = JSON.stringify(data);
-    // postbody = data; //werkt ook check ff
-    // for (var i = 0; i < data.length; i++) {
-    //     postbody.push(
-    //         JSON.stringify({
-    //             id: data[i].id,
-    //             value: data[i].value,
-    //             geolocation: data[i].geolocation,
-    //         })
-    //     );
-    // }
     console.log("postbody: " + postbody);
 
     console.log(setCreatedRouteOnMap(postbody));

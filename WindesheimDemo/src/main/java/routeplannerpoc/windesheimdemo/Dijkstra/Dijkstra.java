@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
 
-
 public class Dijkstra {
 
   public static List<Node> DijkstraRouteOrder(List<Node> nodes) {
