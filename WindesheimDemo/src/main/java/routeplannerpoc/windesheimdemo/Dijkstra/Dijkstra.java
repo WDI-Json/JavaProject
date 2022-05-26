@@ -3,16 +3,15 @@ package routeplannerpoc.windesheimdemo.Dijkstra;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.stream.Stream;
 import java.util.stream.IntStream;
 
 
 public class Dijkstra {
 
-  public static List<Node> DijkstraRouteOrder(Node nodes[]) {
-    Node firstNode = nodes[0];
-    ArrayList<Node> nodesList = new ArrayList<>(Arrays.asList(nodes));
+  public static List<Node> DijkstraRouteOrder(List<Node> nodes) {
+    Node firstNode = nodes.get(0);
+    ArrayList<Node> nodesList = new ArrayList<>(nodes);
     // setup distance matrix (nodeA,nodeB = distance between the two)
     HashMap<Node, HashMap<Node, Double>> distances = new HashMap<>();
     for (Node node : nodes) {

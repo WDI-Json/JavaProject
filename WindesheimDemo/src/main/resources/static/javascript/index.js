@@ -235,6 +235,7 @@ const listData = window.routeArray.map((value) => {
             value.addressObject.postalcode +
             " " +
             value.addressObject.city,
+        routename: "CUSTOMER " + value.customerID + "FROM " + value.addressObject.city,
         location: {
             lat: value.addressObject.geolocation.lat,
             lng: value.addressObject.geolocation.lng,
