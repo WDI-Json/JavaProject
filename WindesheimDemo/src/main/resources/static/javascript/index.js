@@ -73,13 +73,13 @@ var routeArray = [
         orderID: 6,
         customerID: 6,
         isRetour: true,
-        name: "Hogeschool Windesheim",
+        name: "Oma Smink",
         addressObject: {
-            streetname: "campus",
-            housenumber: 2,
-            postalcode: "8017CA",
-            city: "Zwolle",
-            geolocation: { lat: 52.49953, lng: 6.07845 },
+            streetname: "Sinte Brandaenstraat",
+            housenumber: 10,
+            postalcode: "3814 WZ",
+            city: "Amersfoort",
+            geolocation: { lat: 52.1710681, lng: 5.413297 },
         },
     },
     {
@@ -141,7 +141,7 @@ window.routeArray = routeArray;
 function createMarkersPerPlace(map) {
     for (let { title, location } of window.places) {
         let position = new google.maps.LatLng(location);
-        new google.maps.Marker({ position, map, title });
+        new google.maps.Marker({position, map, title });
     }
 }
 
@@ -169,7 +169,7 @@ function initMap() {
     // hier define je map.
     const map = new google.maps.Map(document.getElementById("map"), {
         center: zwolle,
-        zoom: 13,
+        zoom: 11,
     });
     const coordInfoWindow = new google.maps.InfoWindow();
     coordInfoWindow.setPosition(zwolle);
