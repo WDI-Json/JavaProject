@@ -8,7 +8,7 @@ var routeArray = [
         orderID: 1,
         customerID: 1,
         isRetour: false,
-        name: "William Campus",
+        name: "Windesheim",
         addressObject: {
             streetname: "campus",
             housenumber: 2,
@@ -21,91 +21,117 @@ var routeArray = [
         orderID: 2,
         customerID: 2,
         isRetour: false,
-        name: "Barend Drecht",
+        name: "Marktplaatsman",
         addressObject: {
-            streetname: "",
-            housenumber: "",
+            streetname: "Bredestraat-Zuid",
+            housenumber: "20",
             postalcode: "",
-            city: "Barendrecht",
-            geolocation: { lat: 51.853, lng: 4.4539 },
+            city: "Herveld",
+            geolocation: { lat: 52.089117, lng: 5.5409255 },
         },
     },
     {
         orderID: 3,
         customerID: 3,
         isRetour: false,
-        name: "scania",
+        name: "Klantnaam",
         addressObject: {
-            streetname: "",
-            housenumber: "",
-            postalcode: "",
+            streetname: "Stadhouderlaan",
+            housenumber: "64",
+            postalcode: "8016KB",
             city: "Zwolle",
-            geolocation: { lat: 52.5255141, lng: 6.0800041 },
+            geolocation: { lat: 52.4843565, lng: 6.0936322 },
         },
     },
     {
         orderID: 4,
         customerID: 4,
         isRetour: true,
-        name: "Zoetermeer",
+        name: "AH Distributie",
         addressObject: {
-            streetname: "campus",
-            housenumber: 2,
-            postalcode: "8017CA",
-            city: "Zoetermeer",
-            geolocation: { lat: 52.0621451, lng: 4.4165747 },
+            streetname: "Galvaniweg",
+            housenumber: 1,
+            postalcode: "8013RG",
+            city: "Zwolle",
+            geolocation: { lat: 52.4948973, lng: 6.1340705 },
         },
     },
     {
         orderID: 5,
-        customerID: 4,
+        customerID: 5,
         isRetour: true,
-        name: "Hogeschool Windesheim",
+        name: "Huidverzorging Heino",
         addressObject: {
-            streetname: "campus",
-            housenumber: 2,
-            postalcode: "8017CA",
-            city: "Zwolle",
-            geolocation: { lat: 52.49953, lng: 6.07845 },
+            streetname: "Dorpsstraat",
+            housenumber: 55,
+            postalcode: "8141AJ",
+            city: "Heino",
+            geolocation: { lat: 52.4379612, lng: 6.2314988 },
         },
     },
     {
         orderID: 6,
-        customerID: 4,
+        customerID: 6,
         isRetour: true,
-        name: "Hogeschool Windesheim",
+        name: "Oma Smink",
         addressObject: {
-            streetname: "campus",
-            housenumber: 2,
-            postalcode: "8017CA",
-            city: "Zwolle",
-            geolocation: { lat: 52.49953, lng: 6.07845 },
+            streetname: "Sinte Brandaenstraat",
+            housenumber: 10,
+            postalcode: "3814 WZ",
+            city: "Amersfoort",
+            geolocation: { lat: 52.1710681, lng: 5.413297 },
         },
     },
     {
         orderID: 7,
-        customerID: 4,
+        customerID: 7,
         isRetour: true,
-        name: "Hogeschool Windesheim",
+        name: "Leon Bennen",
         addressObject: {
-            streetname: "campus",
-            housenumber: 2,
-            postalcode: "8017CA",
-            city: "Zwolle",
-            geolocation: { lat: 52.49953, lng: 6.07845 },
+            streetname: "Burgemeester G.W. Stroïnkweg",
+            housenumber: 67,
+            postalcode: "8343XK",
+            city: "Steenwijk",
+            geolocation: { lat: 52.6009259, lng: 6.170882 },
         },
     },
     {
         orderID: 8,
-        customerID: 4,
+        customerID: 8,
         isRetour: true,
-        name: "Hogeschool Windesheim",
+        name: "Paleispark Kroondomein Het Loo",
         addressObject: {
-            streetname: "campus",
-            housenumber: 2,
-            postalcode: "8017CA",
-            city: "Zwolle",
-            geolocation: { lat: 52.49953, lng: 6.07845 },
+            streetname: "",
+            housenumber: "",
+            postalcode: "7313AA",
+            city: "Apeldoorn",
+            geolocation: { lat: 52.2250347, lng: 5.9517327 },
+        },
+    },
+    {
+        orderID: 9,
+        customerID: 9,
+        isRetour: true,
+        name: "Heitink Transport",
+        addressObject: {
+            streetname: "Kamperstraatweg",
+            housenumber: "25",
+            postalcode: "8278AB",
+            city: "Kamperveen",
+            geolocation: { lat: 52.4907005, lng: 5.9332327 },
+        },
+    },
+    {
+        orderID: 10,
+        customerID: 10,
+        isRetour: true,
+        name: "Martijn Linde",
+        addressObject: {
+            streetname: "Willem Egbertsstraat",
+            housenumber: "56",
+            postalcode: "8061ED",
+            city: "Hasselt",
+            geolocation: { lat: 52.2250347, lng: 5.9517327 },
         },
     },
 ];
@@ -143,7 +169,7 @@ function initMap() {
     // hier define je map.
     const map = new google.maps.Map(document.getElementById("map"), {
         center: zwolle,
-        zoom: 13,
+        zoom: 11,
     });
     const coordInfoWindow = new google.maps.InfoWindow();
     coordInfoWindow.setPosition(zwolle);
@@ -235,6 +261,8 @@ const listData = window.routeArray.map((value) => {
             value.addressObject.postalcode +
             " " +
             value.addressObject.city,
+        routename:
+            "CUSTOMER " + value.customerID + "FROM " + value.addressObject.city,
         location: {
             lat: value.addressObject.geolocation.lat,
             lng: value.addressObject.geolocation.lng,
@@ -245,16 +273,6 @@ const listData = window.routeArray.map((value) => {
 function setNewMap(input) {
     const data = JSON.parse(input);
     postbody = JSON.stringify(data);
-    // postbody = data; //werkt ook check ff
-    // for (var i = 0; i < data.length; i++) {
-    //     postbody.push(
-    //         JSON.stringify({
-    //             id: data[i].id,
-    //             value: data[i].value,
-    //             geolocation: data[i].geolocation,
-    //         })
-    //     );
-    // }
     console.log("postbody: " + postbody);
 
     console.log(setCreatedRouteOnMap(postbody));

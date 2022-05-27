@@ -31,7 +31,7 @@
                 <div id="map"></div>
                 <div class="mt-4 flex" x-data>
                     <button class="btn -theme me-4" @click="open = true">Nieuw route</button>
-                    <button class="btn -theme me-4" @click="setRouteOnMap()">Bestaande route</button>
+                    <button class="btn -theme me-4" @click="initmap(),setRouteOnMap()">Bestaande route</button>
                     <button class="btn -outline ms-auto" @click="initMap()">Clear</button>
                 </div>
             </div>
@@ -45,13 +45,8 @@
                         <ul id="selectlist" class="select-list list-style -none">
                             <li x-show="!unselectedRouteList.length" class="py-1 px-2">loading...</li>
                             <template x-for="route in unselectedRouteList">
-                                <li
-                                    :id="route.id"
-                                    x-text="route.value"
-                                    :data-route="JSON.stringify(route)"
-                                    @click="selectRoute()"
-                                    class="text-nowrap overflow-x-hidden py-1 px-2"
-                                ></li>
+                                <li :id="route.id" x-text="route.value" :data-route="JSON.stringify(route)"
+                                    @click="selectRoute()" class="text-nowrap overflow-x-hidden py-1 px-2"></li>
                             </template>
                         </ul>
                     </div>
@@ -65,12 +60,14 @@
                         <ul id="routelist" class="select-list list-style -none">
                             <li x-show="!selectedRouteList.length" class="py-1 px-2">Selecteer een order</li>
                             <template x-for="route in selectedRouteList">
-                                <li :id="route.id" x-text="route.value" :data-route="JSON.stringify(route)" class="text-nowrap overflow-x-hidden py-1 px-2"></li>
+                                <li :id="route.id" x-text="route.value" :data-route="JSON.stringify(route)"
+                                    class="text-nowrap overflow-x-hidden py-1 px-2"></li>
                             </template>
                         </ul>
                     </div>
                 </div>
-                <button id="setroute" @click="open = false; setNewMap(`${JSON.stringify(selectedRouteList)}`);" class="btn -theme">Bereken Route</button>
+                <button id="setroute" @click="open = false; setNewMap(`${JSON.stringify(selectedRouteList)}`);"
+                    class="btn -theme">Bereken Route</button>
             </div>
         </section>
 
