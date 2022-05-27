@@ -23,3 +23,5 @@
 hs_err_pid*
 WindesheimDemo/src/main/resources/static/css/.DS_Store
 WindesheimDemo/src/main/resources/static/.DS_Store
+.idea/*
+.DS_Store
