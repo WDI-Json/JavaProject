@@ -202,7 +202,8 @@ function invalid(event) {
 }
 
 function setRouteOnMap() {
-    fetch("http://localhost:8080/greeting", {
+
+    fetch("/greeting", {
         method: "POST",
         body: JSON.stringify(
             // dit ga je straks vullen met je form input fields (geolocs in geolocs uit)
@@ -213,6 +214,8 @@ function setRouteOnMap() {
             }
         ),
         headers: {
+            "Access-Control-Allow-Origin":  "https://nerdygadgetspoc.fly.dev",
+            "Access-Control-Allow-Methods": "POST",
             "Content-type": "application/json; charset=UTF-8",
         },
     })
@@ -226,10 +229,12 @@ function setRouteOnMap() {
 }
 
 function setCreatedRouteOnMap(postbody) {
-    fetch("http://localhost:8080/response", {
+    fetch("/response", {
         method: "POST",
         body: postbody,
         headers: {
+            "Access-Control-Allow-Origin":  "https://nerdygadgetspoc.fly.dev",
+            "Access-Control-Allow-Methods": "POST",
             "Content-type": "application/json; charset=UTF-8",
         },
     })
